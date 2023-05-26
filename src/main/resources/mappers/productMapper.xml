@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="productMapper">
+    <select id="select" parameterType="java.util.HashMap" resultType="product">
+        select product_no,product_name,product_imgname,product_location,product_price,
+        category_name as product_category, product_date, product_seller
+        from shop_product
+        inner join shop_product_category on product_category_no = category_no
+        <if test="no != null">where product_no = #{no}</if>
+        <choose>
+            <when test="no != null and product_seller != null">
+                and product_seller = #{product_seller}
+            </when>
+            <when test="no == null and product_seller != null">
+                where product_seller = #{product_seller}
+            </when>
+            <otherwise></otherwise>
+        </choose>
+    </select>
+    <select id="selectCategory" resultType="java.lang.String">
+        select category_name
+        from shop_product_category
+        order by category_no desc
+    </select>
+    <insert id="insert" parameterType="product">
+        insert into shop_product(
+        product_name,
+        product_location,
+        <if test="product_imgname != null">product_imgname,</if>
+        product_price,
+        product_seller,
+        product_category_no)
+        values (
+        #{product_name},
+        #{product_location},
+        <if test="product_imgname != null">#{product_imgname},</if>
+        #{product_price},
+        #{product_seller},
+        (select category_no
+        from shop_product_category
+        where product_name = #{product_category}))
+    </insert>
+    <update id="update" parameterType="product">
+        update shop_product
+        set
+        product_name =#{product_name},
+        product_location = #{product_location},
+        <if test="product_imgname != null">product_imgname = #{product_imgname},</if>
+        product_price = #{product_price},
+        product_category_no =
+        (select category_no
+        from shop_product_category
+        where product_name = #{product_category})
+    </update>
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- VO&DTO를 등록하세요 (별칭 설정)-->
+    <typeAliases>
+        <typeAlias type="com.bit.web.model.ProductDto" alias="product"/>
+        <typeAlias type="com.bit.web.model.UserDto" alias="user"/>
+    </typeAliases>
+
+</configuration>

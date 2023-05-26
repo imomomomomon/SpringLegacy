@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg  ref="hikariConfig"></constructor-arg>
+	</bean>
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="idleTimeout" value="30000" />
+		<property name="connectionTimeout" value="3000" />
+		<property name="maxLifetime" value="400000" />
+		<property name="maximumPoolSize" value="300" />
+		<property name="minimumIdle" value="20" />
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bitdb?serverTimezone=UTC" />
+		<property name="username" value="bit" />
+		<property name="password" value="bit" />
+	</bean>
+	<!-- log추가 -->
+	<bean id="ds"
+		  class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSource" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL : "/>
+			</bean>
+		</property>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"></property>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml"></property>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+</beans>
