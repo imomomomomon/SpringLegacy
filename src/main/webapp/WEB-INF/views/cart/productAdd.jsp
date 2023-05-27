@@ -86,6 +86,7 @@
 						{
 							$('select#select_product_category').val(data.product_category).prop("selected",true);
 							let form = $('form#form_insert')[0];
+							form.product_no.value = data.product_no;
 							form.product_name.value = data.product_name;
 							form.product_location.value = data.product_location;
 							form.product_price.value = data.product_price;
@@ -110,6 +111,7 @@
 					if(data == '1') {
 						$('form#form_insert')[0].reset();
 						alert("등록 성공");
+						getList();
 					}
 				},error:function(){
 					console.log('error insert Info');
@@ -130,6 +132,7 @@
 					if(data == '1') {
 						$('form#form_insert')[0].reset();
 						alert("등록 성공");
+						getList();
 					}
 				},error:function(){
 					console.log('error insert Info');
@@ -137,6 +140,7 @@
 			});
 		}
 		function printList(array) {
+			$('#tbody_list').children().remove();
 			for(let i = 0; i < array.length; i++){
 				let tr = $('<tr></tr>');
 				tr.append($('<td>'+ array[i].product_no +'</td>'));

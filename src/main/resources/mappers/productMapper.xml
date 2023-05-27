@@ -41,7 +41,7 @@
         #{product_seller},
         (select category_no
         from shop_product_category
-        where product_name = #{product_category}))
+        where category_name = #{product_category}))
     </insert>
     <update id="update" parameterType="product">
         update shop_product
@@ -53,6 +53,7 @@
         product_category_no =
         (select category_no
         from shop_product_category
-        where product_name = #{product_category})
+        where category_name = #{product_category})
+        where product_no = #{product_no}
     </update>
 </mapper>
