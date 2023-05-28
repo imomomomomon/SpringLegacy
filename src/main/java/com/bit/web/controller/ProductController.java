@@ -15,7 +15,7 @@ public class ProductController {
     @Resource(name = "serviceImpl")
     Service service;
 
-    @GetMapping("/getList")
+    @GetMapping("/getProductList")
     public List<Object> selectProductList(String id){
         HashMap<String, Object> map = new HashMap<String, Object>();
         {
@@ -24,15 +24,14 @@ public class ProductController {
         }
         return service.selectList(map);
     }
-    @GetMapping("/getOne/{no}")
-    public Object selectProduct(@PathVariable("no") int no,
-                                @PathVariable("id") String id){
+    @GetMapping("/getProduct/{no}")
+    public Object selectProduct(@PathVariable("no") int no){
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("no",no);
         return service.selectList(map).size()==0?null:service.selectList(map).get(0);
     }
 
-    @GetMapping("/getOne/{no}/{id}")
+    @GetMapping("/getProduct/{no}/{id}")
     public Object selectProductToId(@PathVariable("no") int no,
                                 @PathVariable("id") String id){
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -46,16 +45,16 @@ public class ProductController {
         return service.selectCategory();
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/insertProduct")
     public int insertProduct(ProductDto dto, HttpSession session) {
         String id = (String) session.getAttribute("id");
         if(id == null) return -1;
         dto.setProduct_seller(id);
-        return service.insertDto(dto);
+        return service.insertProduct(dto);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/updateProduct")
     public int updateProduct(ProductDto dto) {
-        return service.updateDto(dto);
+        return service.updateProduct(dto);
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public class DaoImpl implements Dao{
     private final static String ns_product = "productMapper.";
+    private final static String ns_reply = "replyMapper.";
     private final static String ns_user = "userMapper.";
     @Autowired
     private SqlSessionTemplate sqlSession;
@@ -24,17 +25,37 @@ public class DaoImpl implements Dao{
     }
 
     @Override
-    public int insertDto(Object obj) {
+    public int insertProduct(Object obj) {
         return sqlSession.insert(ns_product+"insert",obj);
     }
 
     @Override
-    public int updateDto(Object obj) {
+    public int updateProduct(Object obj) {
         return sqlSession.update(ns_product+"update",obj);
     }
 
     @Override
     public String checkLogin(Object user) {
         return sqlSession.selectOne(ns_user+"checkLogin",user);
+    }
+
+    @Override
+    public List<Object> selectReplyList(int no) {
+        return sqlSession.selectList(ns_reply+"selectReplyList",no);
+    }
+
+    @Override
+    public Object selectReply(int no) {
+        return sqlSession.selectOne(ns_reply+"selectReply",no);
+    }
+
+    @Override
+    public int insertReply(Object obj) {
+        return sqlSession.insert(ns_reply+"insertReply",obj);
+    }
+
+    @Override
+    public int updateReplyContents(HashMap<String,Object> map) {
+        return sqlSession.update(ns_reply+"updateReplyContents",map);
     }
 }

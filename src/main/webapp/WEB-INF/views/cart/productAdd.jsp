@@ -45,7 +45,7 @@
 		}
 		function getList() {
 			$.ajax({
-				url:'${pageContext.request.contextPath}/product/getList',
+				url:'${pageContext.request.contextPath}/product/getProductList',
 				type:'GET',
 				data:{'id':'${sessionScope.id}'},
 				success:function (data) {
@@ -62,6 +62,7 @@
 				type:'GET',
 				success:function (data) {
 					{
+						$('select#select_product_category').children().remove();
 						for (let i = 0; i < data.length; i++) {
 							let option = $('<option value="'+data[i]+'">' + data[i] + '</option>');
 							$('select#select_product_category').append(option);
@@ -73,7 +74,7 @@
 			});
 		}
 		function searchToNo() {
-			let url = "${pageContext.request.contextPath}/product/getOne/"
+			let url = "${pageContext.request.contextPath}/product/getProduct/"
 					+ $('input#input_searchToNo').val()
 					+ "/" + '${sessionScope.id}';
 			$.ajax({
@@ -101,7 +102,7 @@
 			let formData = new FormData($('form#form_insert')[0]);
 
 			$.ajax({
-				url:'${pageContext.request.contextPath}/product/insert',
+				url:'${pageContext.request.contextPath}/product/insertProduct',
 				type:'POST',
 				enctype:'multipart/form-data',
 				data:formData,
@@ -122,7 +123,7 @@
 			let formData = new FormData($('form#form_insert')[0]);
 
 			$.ajax({
-				url:'${pageContext.request.contextPath}/product/update',
+				url:'${pageContext.request.contextPath}/product/updateProduct',
 				type:'POST',
 				enctype:'multipart/form-data',
 				data:formData,
@@ -172,7 +173,7 @@
 			
 				<div class="contents">
 					<div class="btnSet clfix mgb15">
-						<span class="fr"> <span class="button"><a href="#">목록</a></span>
+						<span class="fr"> <span class="button"><a href="/page/list">목록</a></span>
 						</span>
 					</div>
 

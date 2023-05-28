@@ -19,6 +19,7 @@
             </when>
             <otherwise></otherwise>
         </choose>
+        order by product_no desc
     </select>
     <select id="selectCategory" resultType="java.lang.String">
         select category_name

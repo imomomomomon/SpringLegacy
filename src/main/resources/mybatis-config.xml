@@ -8,6 +8,7 @@
     <typeAliases>
         <typeAlias type="com.bit.web.model.ProductDto" alias="product"/>
         <typeAlias type="com.bit.web.model.UserDto" alias="user"/>
+        <typeAlias type="com.bit.web.model.ReplyDto" alias="reply"/>
     </typeAliases>
 
 </configuration>

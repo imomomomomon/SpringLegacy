@@ -32,7 +32,8 @@ public class PageController {
         return "cart/productList";
     }
     @GetMapping("/info/{no}")
-    public String goInfo(@PathVariable("no") int no){
+    public String goInfo(@PathVariable("no") int no, Model model){
+        model.addAttribute("no",no);
         return "cart/productInfo";
     }
     @GetMapping("/add")

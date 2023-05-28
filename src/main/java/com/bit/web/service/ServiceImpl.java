@@ -25,13 +25,13 @@ public class ServiceImpl implements Service{
     }
 
     @Override
-    public int insertDto(Object obj) {
-        return uploadFileAtProductDto((ProductDto) obj)?dao.insertDto(obj):0;
+    public int insertProduct(Object obj) {
+        return uploadFileAtProductDto((ProductDto) obj)?dao.insertProduct(obj):0;
     }
 
     @Override
-    public int updateDto(Object obj) {
-        return uploadFileAtProductDto((ProductDto) obj)?dao.updateDto(obj):0;
+    public int updateProduct(Object obj) {
+        return uploadFileAtProductDto((ProductDto) obj)?dao.updateProduct(obj):0;
     }
 
     @Override
@@ -52,5 +52,25 @@ public class ServiceImpl implements Service{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Object> selectReplyList(int no) {
+        return dao.selectReplyList(no);
+    }
+
+    @Override
+    public Object selectReply(int no) {
+        return dao.selectReply(no);
+    }
+
+    @Override
+    public int insertReply(Object obj) {
+        return dao.insertReply(obj);
+    }
+
+    @Override
+    public int updateReplyContents(HashMap<String, Object> map) {
+        return dao.updateReplyContents(map);
     }
 }

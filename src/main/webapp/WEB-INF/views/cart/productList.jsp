@@ -31,7 +31,7 @@
 		}
 		function getList() {
 			$.ajax({
-				url:'${pageContext.request.contextPath}/product/getList',
+				url:'${pageContext.request.contextPath}/product/getProductList',
 				type:'GET',
 				success:function (data) {
 					printList(data);
