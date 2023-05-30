@@ -45,8 +45,8 @@ public class DaoImpl implements Dao{
     }
 
     @Override
-    public List<Object> selectReplyList(int no) {
-        return sqlSession.selectList(ns_reply+"selectReplyList",no);
+    public List<Object> selectReplyList(int board_no) {
+        return sqlSession.selectList(ns_reply+"selectReplyList",board_no);
     }
 
     @Override
@@ -62,5 +62,10 @@ public class DaoImpl implements Dao{
     @Override
     public int updateReplyContents(HashMap<String,Object> map) {
         return sqlSession.update(ns_reply+"updateReplyContents",map);
+    }
+
+    @Override
+    public int deleteReply(int reply_no) {
+        return sqlSession.delete(ns_reply+"deleteReply",reply_no);
     }
 }

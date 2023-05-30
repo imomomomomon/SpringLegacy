@@ -60,8 +60,8 @@ public class ServiceImpl implements Service{
     }
 
     @Override
-    public List<Object> selectReplyList(int no) {
-        return dao.selectReplyList(no);
+    public List<Object> selectReplyList(int board_no) {
+        return dao.selectReplyList(board_no);
     }
 
     @Override
@@ -77,5 +77,10 @@ public class ServiceImpl implements Service{
     @Override
     public int updateReplyContents(HashMap<String, Object> map) {
         return dao.updateReplyContents(map);
+    }
+
+    @Override
+    public int deleteReply(int reply_no) {
+        return dao.deleteReply(reply_no);
     }
 }

@@ -84,6 +84,19 @@
                 }
             });
         }
+        function deleteReply(reply_no) {
+            const url = '${pageContext.request.contextPath}/reply/deleteReply/' + reply_no;
+            $.ajax({
+                url:url,
+                type:'GET',
+                success:function (data) {
+                    getReplyList(${no});
+                    // rollbackUpdateReplyForm(inputNo);
+                },error:function () {
+                    console.log('error');
+                }
+            });
+        }
         function setValue(data) {
             $('td#td_no').text(data.product_no);
             $('td#td_name').text(data.product_name);
@@ -128,8 +141,11 @@
                             ')">수정</a>' +
                             '</span></li>');
                         let li = $('<li><span>|</span></li>');
-                        let li_delete = $('<li><span>삭제</span></li>');
-
+                        let li_delete = $('<li><span>' +
+                            '<a href="javascript:deleteReply(' +
+                            data.reply_no +
+                            ')">삭제</a>' +
+                            '</span></li>');
                         ul2.append(li_update).append(li).append(li_delete);
                     }
                     div_letter_top.append(ul2);

@@ -12,8 +12,9 @@ public interface Dao {
     //로그인-----------------------------------------------------
     String checkLogin(Object user);
     //답글-----------------------------------------------------
-    List<Object> selectReplyList(int no);
+    List<Object> selectReplyList(int board_no);
     Object selectReply(int no);
     int insertReply(Object obj);
     int updateReplyContents(HashMap<String,Object> map);
+    int deleteReply(int reply_no);
 }

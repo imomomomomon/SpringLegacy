@@ -20,4 +20,7 @@
     <update id="updateReplyContents" parameterType="java.util.HashMap">
         call UpdateReply(#{reply_board_no},#{reply_contents})
     </update>
+    <delete id="deleteReply" parameterType="int">
+        call DeleteReply(#{reply_no})
+    </delete>
 </mapper>

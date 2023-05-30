@@ -40,4 +40,9 @@ public class ReplyController {
         map.put("reply_contents",format);
         return service.updateReplyContents(map);
     }
+
+    @GetMapping("/deleteReply/{reply_no}")
+    public int deleteReply(@PathVariable("reply_no") int reply_no){
+        return service.deleteReply(reply_no);
+    }
 }
