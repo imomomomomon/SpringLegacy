@@ -71,14 +71,14 @@
             });
         }
         function updateReply(reply_no) {
-            const url = '${pageContext.request.contextPath}/reply/insertReply';
+            const url = '${pageContext.request.contextPath}/reply/updateReplyContents';
             $.ajax({
                 url:url,
                 type:'POST',
-                data:{'reply_no':${reply_no},'contents':$('#textarea_updateReply').val()},
+                data:{'reply_no':reply_no,'contents':$('#textarea_updateReply').val()},
                 success:function (data) {
                     getReplyList(${no});
-                    rollbackUpdateReplyForm(no);
+                    rollbackUpdateReplyForm(inputNo);
                 },error:function () {
                     console.log('error');
                 }
@@ -171,7 +171,8 @@
                     {
                         let textarea = $('<textarea id="textarea_updateReply" rows="" cols=""></textarea>&nbsp;');
                         textarea.val(format_contents);
-                        let input_confirm = $('<input type="button" value="등록" onclick=""/>');
+                        let input_confirm = $('<input type="button" value="등록" onclick="' +
+                            'javascript:updateReply('+no+')"/>');
                         let input_cancel = $('<input type="button" value="취소" onclick="' +
                             'javascript:rollbackUpdateReplyForm('+ no +')"/>');
                         li.append(textarea).append(input_confirm).append(input_cancel);

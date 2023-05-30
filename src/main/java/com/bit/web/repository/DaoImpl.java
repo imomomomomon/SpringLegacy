@@ -35,6 +35,11 @@ public class DaoImpl implements Dao{
     }
 
     @Override
+    public int deleteProduct(int product_no) {
+        return sqlSession.delete(ns_product+"delete",product_no);
+    }
+
+    @Override
     public String checkLogin(Object user) {
         return sqlSession.selectOne(ns_user+"checkLogin",user);
     }

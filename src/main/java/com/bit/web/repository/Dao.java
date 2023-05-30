@@ -8,6 +8,7 @@ public interface Dao {
     List<String> selectCategory();
     int insertProduct(Object obj);
     int updateProduct(Object obj);
+    int deleteProduct(int product_no);
     //로그인-----------------------------------------------------
     String checkLogin(Object user);
     //답글-----------------------------------------------------

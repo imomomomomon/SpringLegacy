@@ -35,6 +35,11 @@ public class ServiceImpl implements Service{
     }
 
     @Override
+    public int deleteProduct(int product_no) {
+        return dao.deleteProduct(product_no);
+    }
+
+    @Override
     public String checkLogin(Object user) {
         return dao.checkLogin(user);
     }

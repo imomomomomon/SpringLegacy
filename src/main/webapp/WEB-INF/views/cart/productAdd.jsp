@@ -22,16 +22,37 @@
 		function changeInsertInfo(){
 			$('li#li_insert').attr("class","over");
 			$('li#li_update').attr("class","");
+			$('li#li_delete').attr("class","");
 			$('tr#tr_search').hide();
+			$('tr#tr_category').show();
+			$('tr#tr_img').show();
+			$('span#btn_confirm').show();
+			$('span#btn_delete').hide();
 			$('form#form_insert')[0].reset();
 			state = "insert";
 		}
 		function changeUpdateInfo(){
 			$('li#li_update').attr("class","over");
 			$('li#li_insert').attr("class","");
+			$('li#li_delete').attr("class","");
 			$('tr#tr_search').show();
+			$('tr#tr_category').show();
+			$('tr#tr_img').show();
 			$('form#form_insert')[0].reset();
+			$('span#btn_confirm').show();
+			$('span#btn_delete').hide();
 			state = "update";
+		}
+		function changeDeleteInfo() {
+			$('li#li_delete').attr("class","over");
+			$('li#li_update').attr("class","");
+			$('li#li_insert').attr("class","");
+			$('tr#tr_search').show();
+			$('tr#tr_category').hide();
+			$('tr#tr_img').hide();
+			$('form#form_insert')[0].reset();
+			$('span#btn_delete').show();
+			$('span#btn_confirm').hide();
 		}
 		function btn_confirm() {
 			switch (state) {
@@ -140,6 +161,28 @@
 				}
 			});
 		}
+		function deleteInfo() {
+			if($('#product_no').val() == 0) {
+				alert("입력된 값이 없습니다.");
+				return;
+			}
+			const url = '${pageContext.request.contextPath}/product/deleteProduct/'+ $('#product_no').val();
+			$.ajax({
+				url:url,
+				type:'POST',
+				success:function(data){
+					if(data == '1') {
+						$('form#form_insert')[0].reset();
+						alert("삭제 성공");
+						getList();
+					} else {
+						alert("입력된 값이 없습니다.");
+					}
+				},error:function(){
+					console.log('error insert Info');
+				}
+			});
+		}
 		function printList(array) {
 			$('#tbody_list').children().remove();
 			for(let i = 0; i < array.length; i++){
@@ -227,6 +270,7 @@
 							<ul class="tabA clfix mgb15">
 								<li id="li_insert" class="over"><a href="javascript:changeInsertInfo()">01. 상품등록</a></li>
 								<li id="li_update" ><a href="javascript:changeUpdateInfo()">02. 상품수정</a></li>
+								<li id="li_delete" ><a href="javascript:changeDeleteInfo()">03. 상품삭제</a></li>
 							</ul>
  		              	<form action="" id="form_insert" method="post"  enctype="multipart/form-data">
 							<div id="info1" class="tbWrapCnt" style="display: block;">
@@ -258,20 +302,20 @@
 											<th>상품가격</th>
 											<td><input type="number" style="border:1px solid #ddd; height:20px;" name="product_price" class="inputText"
 												size="50" />
-												<input type="hidden" name="product_no" value="0"/>
+												<input type="hidden" id="product_no" name="product_no" value="0"/>
 												</td>
 										</tr>
-										<tr>
+										<tr id="tr_category">
 											<th>카테고리</th>
 											<td>
-											<select style="width: 200px;" name="product_category" id="select_product_category">
+											<select style="width: 200px;" id="select_product_category" name="product_category" id="select_product_category">
 												<option value="" selected="selected">선택하세요</option>
 											</select>
 											</td>
 										</tr>
-										<tr>
+										<tr id="tr_img">
 											<th>상품이미지1</th>
-											<td class="alignM"><input type="file" name="imgfile"
+											<td class="alignM"><input type="file"  name="imgfile"
 												class="inputText" size="10" /></td>
 										</tr>
 									</tbody>
@@ -281,7 +325,8 @@
 						</div>
 
 						<p class="agr">
-							<span class="button"><a href="javascript:btn_confirm()">저장</a></span>
+							<span id="btn_confirm" class="button"><a href="javascript:btn_confirm()">저장</a></span>
+							<span id="btn_delete" class="button"><a href="javascript:deleteInfo()">삭제</a></span>
 						</p>
 					</div>
 				</div>

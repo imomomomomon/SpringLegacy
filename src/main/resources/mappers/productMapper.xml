@@ -28,4 +28,7 @@
             #{product_price},
             #{product_category})
     </update>
+    <delete id="delete" parameterType="int">
+        call DeleteProduct(#{product_no})
+    </delete>
 </mapper>

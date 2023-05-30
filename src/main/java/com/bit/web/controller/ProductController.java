@@ -57,4 +57,10 @@ public class ProductController {
     public int updateProduct(ProductDto dto) {
         return service.updateProduct(dto);
     }
+
+
+    @PostMapping("/deleteProduct/{product_no}")
+    public int deleteProduct(@PathVariable("product_no") int product_no){
+        return service.deleteProduct(product_no);
+    }
 }

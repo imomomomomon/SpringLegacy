@@ -34,9 +34,10 @@ public class ReplyController {
 
     @PostMapping("/updateReplyContents")
     public int updateReplyContents(int reply_no,String contents){
+        String format = contents.replace("\n","<br>");
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("reply_no",reply_no);
-        map.put("reply_contents",contents);
+        map.put("reply_contents",format);
         return service.updateReplyContents(map);
     }
 }

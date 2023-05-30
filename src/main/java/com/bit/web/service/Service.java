@@ -8,6 +8,7 @@ public interface Service {
     List<String> selectCategory();
     int insertProduct(Object obj);
     int updateProduct(Object obj);
+    int deleteProduct(int product_no);
     String checkLogin(Object user);
     List<Object> selectReplyList(int no);
     Object selectReply(int no);

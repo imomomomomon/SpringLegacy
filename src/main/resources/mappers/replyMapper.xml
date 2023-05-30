@@ -5,26 +5,19 @@
 
 <mapper namespace="replyMapper">
     <select id="selectReplyList" parameterType="int" resultType="reply">
-        select *
-        from shop_board_reply
-        where reply_board_no = #{no}
-        order by reply_no desc
+        call GetReply(#{no},null)
     </select>
     <select id="selectReply" parameterType="int" resultType="reply">
-        select reply_no, reply_writer,reply_contents,reply_regdate
-        from shop_board_reply
-        where reply_no = #{no}
+        call GetReply(null,#{no})
     </select>
     <insert id="insertReply" parameterType="reply">
-        insert into shop_board_reply(reply_board_no,
-                                     reply_writer,
-                                     reply_contents,
-                                     reply_parent)
-        values (#{reply_board_no},#{reply_writer},#{reply_contents},#{reply_parent})
+        call InsertReply(
+            #{reply_board_no},
+            #{reply_writer},
+            #{reply_contents},
+            #{reply_parent});
     </insert>
     <update id="updateReplyContents" parameterType="java.util.HashMap">
-        update shop_board_reply
-        set reply_contents = #{reply_contents}
-        where reply_no = #{reply_no}
+        call UpdateReply(#{reply_board_no},#{reply_contents})
     </update>
 </mapper>
