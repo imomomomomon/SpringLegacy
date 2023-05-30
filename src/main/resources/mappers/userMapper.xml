@@ -5,6 +5,6 @@
 
 <mapper namespace="userMapper">
     <select id="checkLogin" parameterType="user" resultType="java.lang.String">
-        select ID from userid where ID = #{ID} and PASSWORD = #{PASSWORD}
+        call GetUserID(#{ID},#{PASSWORD})
     </select>
 </mapper>

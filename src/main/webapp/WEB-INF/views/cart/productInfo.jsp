@@ -70,6 +70,20 @@
                 }
             });
         }
+        function updateReply(reply_no) {
+            const url = '${pageContext.request.contextPath}/reply/insertReply';
+            $.ajax({
+                url:url,
+                type:'POST',
+                data:{'reply_no':${reply_no},'contents':$('#textarea_updateReply').val()},
+                success:function (data) {
+                    getReplyList(${no});
+                    rollbackUpdateReplyForm(no);
+                },error:function () {
+                    console.log('error');
+                }
+            });
+        }
         function setValue(data) {
             $('td#td_no').text(data.product_no);
             $('td#td_name').text(data.product_name);

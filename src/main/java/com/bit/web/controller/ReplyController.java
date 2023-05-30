@@ -33,9 +33,9 @@ public class ReplyController {
     }
 
     @PostMapping("/updateReplyContents")
-    public int updateReplyContents(int no,String contents){
+    public int updateReplyContents(int reply_no,String contents){
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("reply_no",no);
+        map.put("reply_no",reply_no);
         map.put("reply_contents",contents);
         return service.updateReplyContents(map);
     }
