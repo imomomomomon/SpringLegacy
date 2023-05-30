@@ -46,8 +46,9 @@
 				tr.append($('<td>'+ array[i].product_no +'</td>'));
 				tr.append($('<td>'+ array[i].product_name+'</td>'));
 				if(array[i].product_imgname != null)
-					tr.append($('<td><img src="${pageContext.request.contextPath}/resources/upload/'+array[i].product_imgname
+					tr.append($('<td><img src="/resources/upload/'+array[i].product_imgname
 							+'" width = "50" height = "50"></td>'));
+				//{pageContext.request.contextPath}/resources/upload/
 				else
 					tr.append($('<td>이미지없음</td>'));
 				tr.append($('<td>'+ array[i].product_location +'</td>'));

@@ -1,5 +1,6 @@
 package com.bit.web.service;
 
+import com.bit.web.Config.Config;
 import com.bit.web.model.ProductDto;
 import com.bit.web.repository.Dao;
 
@@ -11,7 +12,6 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service{
-    private final static String uploadSrc = "D:\\Intelij\\SpringLegacy\\src\\main\\webapp\\resources\\upload";
     @Resource(name = "daoImpl")
     private Dao dao;
     @Override
@@ -41,7 +41,7 @@ public class ServiceImpl implements Service{
 
     private boolean uploadFileAtProductDto(ProductDto dto){
         if(!dto.getImgfile().isEmpty()) {
-            File file = new File(uploadSrc,dto.getImgfile().getOriginalFilename());
+            File file = new File(Config.FILEUPLOAD.url(),dto.getImgfile().getOriginalFilename());
             try {
                 dto.getImgfile().transferTo(file);
                 dto.setProduct_imgname(file.getName());
