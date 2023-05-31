@@ -35,4 +35,11 @@ public class PageController {
     public String goAdd(){
         return "cart/productAdd";
     }
+    @GetMapping("/cart")
+    public String goCart(){
+        return "cart/cartList";
+    }
+
+    @GetMapping("/ajaxtest")
+    public String goTest() { return "test/mvcOptionIndex"; }
 }

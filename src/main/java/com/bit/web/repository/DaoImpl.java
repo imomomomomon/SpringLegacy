@@ -68,4 +68,9 @@ public class DaoImpl implements Dao{
     public int deleteReply(int reply_no) {
         return sqlSession.delete(ns_reply+"deleteReply",reply_no);
     }
+
+    @Override
+    public List<Object> selectProductInCart(String id) {
+        return sqlSession.selectList(ns_product+"selectProductInCart",id);
+    }
 }

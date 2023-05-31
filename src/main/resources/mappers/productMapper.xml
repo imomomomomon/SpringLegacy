@@ -10,6 +10,9 @@
     <select id="selectCategory" resultType="java.lang.String">
         call GetCategory()
     </select>
+    <select id="selectProductInCart" resultType="product">
+        call GetProductInCart(#{id})
+    </select>
     <insert id="insert" parameterType="product">
         call InsertProduct(
         #{product_name},

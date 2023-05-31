@@ -1,6 +1,6 @@
 package com.bit.web.service;
 
-import com.bit.web.Config.Config;
+import com.bit.web.config.Config;
 import com.bit.web.model.ProductDto;
 import com.bit.web.repository.Dao;
 
@@ -82,5 +82,10 @@ public class ServiceImpl implements Service{
     @Override
     public int deleteReply(int reply_no) {
         return dao.deleteReply(reply_no);
+    }
+
+    @Override
+    public List<Object> selectProductInCart(String id) {
+        return dao.selectProductInCart(id);
     }
 }

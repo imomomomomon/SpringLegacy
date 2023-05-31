@@ -30,6 +30,11 @@
 		function goInfo(no) {
 			location.href="${pageContext.request.contextPath}/page/info/"+no;
 		}
+		function goCart() {
+			let session_id = '${sessionScope.id}';
+			if(session_id != '')
+				location.href = "${pageContext.request.contextPath}/page/cart"
+		}
 		function getList() {
 			ajax_UrlPlusParam(
 					'${pageContext.request.contextPath}/product/getProductList',
@@ -45,7 +50,6 @@
 				if(array[i].product_imgname != null)
 					tr.append($('<td><img src="/resources/upload/'+array[i].product_imgname
 							+'" width = "50" height = "50"></td>'));
-				//{pageContext.request.contextPath}/resources/upload/
 				else
 					tr.append($('<td>이미지없음</td>'));
 				tr.append($('<td>'+ array[i].product_location +'</td>'));
@@ -79,6 +83,7 @@
 							<span id="span_admin_logout" class="button"><a href="${pageContext.request.contextPath}/page/logout">로그아웃</a></span>
 							<span id="span_admin_add" class="button"><a href="${pageContext.request.contextPath}/page/add">추가</a></span>
 							<span class="button"><a href="#">목록</a></span>
+							<span class="button"><a href="javascript:goCart()">장바구니</a></span>
 						</span>
 					</div>
                    <form action="clientList.do" method="post">

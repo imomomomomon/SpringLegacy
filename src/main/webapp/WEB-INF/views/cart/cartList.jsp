@@ -10,8 +10,43 @@
 <meta http-equiv="X-UA-Compatible" content="IE=10" />
 <meta http-equiv="imagetoolbar" content="no" />
 <!-- <link href="../css/contents.css" rel="stylesheet" type="text/css" /> -->
-<link href="../css/default.css" rel="stylesheet" type="text/css" />
-
+<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			getCartList();
+		})
+		function getCartList() {
+			ajax_UrlPlusParam(
+					'${pageContext.request.contextPath}/product/getProductInCart',
+					printCartList,
+					'GET'
+			);
+		}
+		function printCartList(array) {
+			$('tbody#tbody_cart_list').children().remove();
+			for(let i = 0; i < array.length; i++ ) {
+				let tr = $('<tr></tr>');
+				{
+					tr.append($('<td><input type="checkbox"/></td>'));
+					tr.append($('<td>'+array[i].product_no+'</td>'));
+					tr.append($('<td>'+array[i].product_name+'</td>'));
+					if(array[i].product_imgname != null)
+						tr.append($('<td><img src="/resources/upload/'+array[i].product_imgname
+								+'" width = "50" height = "50"></td>'));
+					else
+						tr.append($('<td>이미지없음</td>'));
+					tr.append($('<td>'+array[i].product_location+'</td>'));
+					tr.append($('<td>'+array[i].product_price+'</td>'));
+					tr.append($('<td>'+array[i].product_category+'</td>'));
+					tr.append($('<td>'+array[i].product_date+'</td>'));
+					tr.append($('<td><span class="buttonFuc"><a href="#">삭제</a></span></td>'));
+				}
+				$('tbody#tbody_cart_list').append(tr);
+			}
+		}
+	</script>
 
 </script>
 
@@ -57,6 +92,7 @@
 					</table>
 							<table class="bbsList">
 								<colgroup>
+									<col width="60"/>
 									<col width="80" />
 									<col width="170" />
 									<col width="170" />
@@ -64,11 +100,12 @@
 									<col width="170" />
 									<col width="170" />
 									<col width="170" />
-									<col width="170" />
+									<col width="110" />
 								</colgroup>
 								<thead>								
 								
 									<tr>
+										<th scope="col">Check</th>
 										<th scope="col">NO.</th>																				
 										<th scope="col">상품명</th>
 										<th scope="col">이미지</th>
@@ -79,31 +116,12 @@
 										<th scope="col">상태</th>									
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td> </td>
-										<td>										 
-										 </td>
-										<td>
-										<a href=""><img src="" width="50" height="50"></img></a></td>
-										<td></td>
-										<td>
-										</td>
-										<td></td>
-										<td></td>
-										<td>
-										<span class="buttonFuc"><a href="#">구매</a>
-										</span>
-										<span class="buttonFuc">
-										
-											<a href="">삭제</a></span>
-										</td>										
-									</tr>
+								<tbody id="tbody_cart_list">
 								</tbody>
 							</table>
 							<table class="bbsList" align="right">
 							<tr align="right">
-								<th align="right">총합계 &nbsp; <input type="text" name="total" id="total" class="inputText" size="30"  align="right" value="0"/></th>
+								<th align="right">총합계 &nbsp; <input type="text" readonly name="total" id="total" class="inputText" size="30"  align="right" value="0"/></th>
 								</tr>	
 							</table>	
 						</div>

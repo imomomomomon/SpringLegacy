@@ -58,9 +58,16 @@ public class ProductController {
         return service.updateProduct(dto);
     }
 
-
     @PostMapping("/deleteProduct/{product_no}")
     public int deleteProduct(@PathVariable("product_no") int product_no){
         return service.deleteProduct(product_no);
+    }
+
+    @GetMapping("/getProductInCart")
+    public List<Object> selectProductInCart(HttpSession session){
+        String id = (String) session.getAttribute("id");
+        if(id == null) return null;
+
+        return service.selectProductInCart(id);
     }
 }

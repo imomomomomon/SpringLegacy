@@ -1,4 +1,4 @@
-package com.bit.web.Config;
+package com.bit.web.config;
 
 public enum Config {
     FILEUPLOAD("D:\\Intelij\\SpringLegacy\\src\\main\\webapp\\resources\\upload\\");

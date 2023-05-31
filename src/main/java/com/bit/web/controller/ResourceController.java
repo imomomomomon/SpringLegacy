@@ -1,6 +1,6 @@
 package com.bit.web.controller;
 
-import com.bit.web.Config.Config;
+import com.bit.web.config.Config;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.nio.file.Files;
 @RequestMapping("/resources")
 public class ResourceController {
     @GetMapping("/upload/{filename:.+}")
-    public ResponseEntity<byte[]> test1(@PathVariable("filename") String filename){
+    public ResponseEntity<byte[]> getResourceEntity(@PathVariable("filename") String filename){
         String uploadSrc = Config.FILEUPLOAD.url();
         File file = new File(uploadSrc+filename);
         ResponseEntity<byte[]> result = null;
