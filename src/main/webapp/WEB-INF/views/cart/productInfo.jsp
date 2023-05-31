@@ -11,6 +11,7 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
     <script type="text/javascript">
         let inputNo = 0;
         $(function () {
@@ -18,84 +19,71 @@
             getReplyList(${no});
         })
         function getInfo(no) {
-            const url = '${pageContext.request.contextPath}/product/getProduct/' + no;
-            $.ajax({
-                url:url,
-                type:'GET',
-                success:function (data) {
-                    setValue(data);
-                },error:function () {
-                    console.log('error');
-                }
-            });
+            ajax_UrlPlusParam(
+                '${pageContext.request.contextPath}/product/getProduct/' + no,
+                setValue,
+                'GET'
+            );
         }
         function getReplyList(board_no) {
-            const url = '${pageContext.request.contextPath}/reply/getReplyList/' + board_no;
-            $.ajax({
-                url:url,
-                type:'GET',
-                success:function (data) {
+            ajax_UrlPlusParam(
+                '${pageContext.request.contextPath}/reply/getReplyList/' + board_no,
+                function (data) {
                     $('div#div_reply_list').children().remove();
                     for (let i = 0; i < data.length; i++) {
                         setReply(data[i]);
                     }
-                },error:function () {
-                    console.log('error');
-                }
-            });
+                },
+                'GET'
+            );
         }
-        function getReplyContents(no,callback) {
-            const url = '${pageContext.request.contextPath}/reply/getReply/' + no;
-            $.ajax({
-                url:url,
-                type:'GET',
-                success:function (data) {
-                    callback(no,data);
-                },error:function () {
-                    console.log('error');
-                }
-            });
+        function getReplyContents(no) {
+            ajax_UrlPlusParam(
+                '${pageContext.request.contextPath}/reply/getReply/' + no,
+                function (data) {
+                    changeReplyFormToInput(no,data);
+                },
+                'GET'
+            );
         }
         function insertReply() {
-            const url = '${pageContext.request.contextPath}/reply/insertReply';
-            $.ajax({
-                url:url,
-                type:'POST',
-                data:{'board_no':${no},'contents':$('#textarea_insertReply').val()},
-                success:function (data) {
+            if(CheckNoSessionId())
+                return;
+
+            ajax_InsertParamWithUrl(
+                data = {board_no : ${no}, contents : $('#textarea_insertReply').val()},
+                '${pageContext.request.contextPath}/reply/insertReply',
+                function () {
                     getReplyList(${no});
                     $('#textarea_insertReply').val("");
-                },error:function () {
-                    console.log('error');
-                }
-            });
+                },
+                'POST'
+            );
         }
         function updateReply(reply_no) {
-            const url = '${pageContext.request.contextPath}/reply/updateReplyContents';
-            $.ajax({
-                url:url,
-                type:'POST',
-                data:{'reply_no':reply_no,'contents':$('#textarea_updateReply').val()},
-                success:function (data) {
+            ajax_InsertParamWithUrl(
+                data = {reply_no : reply_no, contents : $('#textarea_updateReply').val()},
+                '${pageContext.request.contextPath}/reply/updateReplyContents',
+                function () {
                     getReplyList(${no});
                     rollbackUpdateReplyForm(inputNo);
-                },error:function () {
-                    console.log('error');
-                }
-            });
+                },
+                'POST'
+            );
         }
         function deleteReply(reply_no) {
-            const url = '${pageContext.request.contextPath}/reply/deleteReply/' + reply_no;
-            $.ajax({
-                url:url,
-                type:'GET',
-                success:function (data) {
-                    getReplyList(${no});
-                    // rollbackUpdateReplyForm(inputNo);
-                },error:function () {
-                    console.log('error');
-                }
-            });
+            if(CheckNoSessionId())
+                return;
+
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                ajax_UrlPlusParam(
+                    '${pageContext.request.contextPath}/reply/deleteReply/' + reply_no,
+                    function () {
+                        getReplyList(${no});
+                    },
+                    'GET'
+                );
+            }
         }
         function setValue(data) {
             $('td#td_no').text(data.product_no);
@@ -161,7 +149,9 @@
             $('div#div_reply_list').append(div_identifier);
         }
         function changeReplyForUpdate(no) {
-            getReplyContents(no,changeReplyFormToInput);
+            if(CheckNoSessionId())
+                return;
+            getReplyContents(no);
         }
         function changeReplyFormToInput(no,data) {
             const format_contents = data.reply_contents.replace('<br>','\r\n');
@@ -204,6 +194,14 @@
             $('div#div_identifier_'+no).children("div#div_contents").show();
             $('div#div_identifier_'+no).children("div#div_update_"+ no).remove();
         }
+        function CheckNoSessionId() {
+            let id = '${sessionScope.id}';
+            if(id === ''){
+                alert("로그인해주세요.");
+                return true;
+            }
+            return false;
+        }
 
     </script>
 </head>
@@ -226,7 +224,7 @@
 						
                             <span class="button"><a href="#">물품구매</a></span>
 							<span class="button"> <a href="#">장바구니</a></span>						
-							<span class="button"><a href="#">목록</a></span>
+							<span class="button"><a href="${pageContext.request.contextPath}/page/list">목록</a></span>
 						</span>
 					</div>
 					<table class="bbsList">

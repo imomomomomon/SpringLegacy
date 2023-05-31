@@ -13,6 +13,7 @@
  <link href="${pageContext.request.contextPath}/resources/css/contents.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 	<script type="text/javascript">
 		let state;
 		$(function () {
@@ -65,47 +66,39 @@
 			}
 		}
 		function getList() {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/product/getProductList',
-				type:'GET',
-				data:{'id':'${sessionScope.id}'},
-				success:function (data) {
-					printList(data);
-					getCategory();
-				},error:function () {
-					console.log('error');
-				}
-			});
+			ajax_InsertParamWithUrl(
+					data = { id: '${sessionScope.id}'},
+					'${pageContext.request.contextPath}/product/getProductList',
+					function (data) {
+						printList(data);
+						getCategory();
+					},
+					'GET'
+			);
 		}
 		function getCategory() {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/product/getCategory',
-				type:'GET',
-				success:function (data) {
-					{
+			ajax_UrlPlusParam(
+					'${pageContext.request.contextPath}/product/getCategory',
+					function (data) {
 						$('select#select_product_category').children().remove();
 						for (let i = 0; i < data.length; i++) {
 							let option = $('<option value="'+data[i]+'">' + data[i] + '</option>');
 							$('select#select_product_category').append(option);
 						}
-					}
-				},error:function () {
-					console.log('error');
-				}
-			});
+					},
+					'GET'
+			);
 		}
 		function searchToNo() {
 			let url = "${pageContext.request.contextPath}/product/getProduct/"
 					+ $('input#input_searchToNo').val()
 					+ "/" + '${sessionScope.id}';
-			$.ajax({
-				url: url,
-				type:'GET',
-				success:function (data) {
-					if(data == '')
-						alert("검색 결과가 존재하지 않습니다.");
-					else{
-						{
+			ajax_UrlPlusParam(
+					url,
+					function () {
+						if(data == '')
+							alert("검색 결과가 존재하지 않습니다.");
+						else {
 							$('select#select_product_category').val(data.product_category).prop("selected",true);
 							let form = $('form#form_insert')[0];
 							form.product_no.value = data.product_no;
@@ -113,75 +106,59 @@
 							form.product_location.value = data.product_location;
 							form.product_price.value = data.product_price;
 						}
-					}
-				},error:function () {
-					console.log('error');
-				}
-			});
+					},
+					'GET'
+			);
 		}
 		function insertInfo() {
 			let formData = new FormData($('form#form_insert')[0]);
-
-			$.ajax({
-				url:'${pageContext.request.contextPath}/product/insertProduct',
-				type:'POST',
-				enctype:'multipart/form-data',
-				data:formData,
-				processData:false,
-				contentType:false,
-				success:function(data){
-					if(data == '1') {
-						$('form#form_insert')[0].reset();
-						alert("등록 성공");
-						getList();
-					}
-				},error:function(){
-					console.log('error insert Info');
-				}
-			});
+			ajax_multipartform(
+					formData,
+					'${pageContext.request.contextPath}/product/insertProduct',
+					function (data) {
+						if(data == '1') {
+							$('form#form_insert')[0].reset();
+							alert("등록 성공");
+							getList();
+						}
+					},
+					'POST'
+			);
 		}
 		function updateInfo() {
 			let formData = new FormData($('form#form_insert')[0]);
-
-			$.ajax({
-				url:'${pageContext.request.contextPath}/product/updateProduct',
-				type:'POST',
-				enctype:'multipart/form-data',
-				data:formData,
-				processData:false,
-				contentType:false,
-				success:function(data){
-					if(data == '1') {
-						$('form#form_insert')[0].reset();
-						alert("등록 성공");
-						getList();
-					}
-				},error:function(){
-					console.log('error insert Info');
-				}
-			});
+			ajax_multipartform(
+					formData,
+					'${pageContext.request.contextPath}/product/updateProduct',
+					function (data) {
+						if(data == '1') {
+							$('form#form_insert')[0].reset();
+							alert("등록 성공");
+							getList();
+						}
+					},
+					'POST'
+			);
 		}
 		function deleteInfo() {
 			if($('#product_no').val() == 0) {
 				alert("입력된 값이 없습니다.");
 				return;
 			}
-			const url = '${pageContext.request.contextPath}/product/deleteProduct/'+ $('#product_no').val();
-			$.ajax({
-				url:url,
-				type:'POST',
-				success:function(data){
-					if(data == '1') {
-						$('form#form_insert')[0].reset();
-						alert("삭제 성공");
-						getList();
-					} else {
-						alert("입력된 값이 없습니다.");
-					}
-				},error:function(){
-					console.log('error insert Info');
-				}
-			});
+
+			ajax_InsertParamWithUrl(
+					'${pageContext.request.contextPath}/product/deleteProduct/'+ $('#product_no').val(),
+					function (data) {
+						if(data == '1') {
+							$('form#form_insert')[0].reset();
+							alert("삭제 성공");
+							getList();
+						} else {
+							alert("입력된 값이 없습니다.");
+						}
+					},
+					'POST'
+			);
 		}
 		function printList(array) {
 			$('#tbody_list').children().remove();

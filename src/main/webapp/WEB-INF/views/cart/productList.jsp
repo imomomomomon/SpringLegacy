@@ -14,6 +14,7 @@
 <!-- <link href="../css/contents.css" rel="stylesheet" type="text/css" /> -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 	<script type="text/javascript">
 		$(function () {
 			getList();
@@ -30,15 +31,11 @@
 			location.href="${pageContext.request.contextPath}/page/info/"+no;
 		}
 		function getList() {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/product/getProductList',
-				type:'GET',
-				success:function (data) {
-					printList(data);
-				},error:function () {
-					console.log('error');
-				}
-			});
+			ajax_UrlPlusParam(
+					'${pageContext.request.contextPath}/product/getProductList',
+					printList,
+					'GET'
+			);
 		}
 		function printList(array) {
 			for (let i = 0; i < array.length; i++) {
