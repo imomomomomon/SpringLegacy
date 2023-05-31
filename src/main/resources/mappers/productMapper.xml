@@ -10,8 +10,8 @@
     <select id="selectCategory" resultType="java.lang.String">
         call GetCategory()
     </select>
-    <select id="selectProductInCart" resultType="product">
-        call GetProductInCart(#{id})
+    <select id="selectProductInCart" parameterType="java.util.HashMap" resultType="product">
+        call GetProductInCart(#{id},#{product_no})
     </select>
     <insert id="insert" parameterType="product">
         call InsertProduct(
@@ -21,6 +21,9 @@
         #{product_price},
         #{product_seller},
         #{product_category})
+    </insert>
+    <insert id="insertProductInCart" parameterType="int">
+        call InsertProductInCart(#{id},#{product_no})
     </insert>
     <update id="update" parameterType="product">
         call UpdateProduct(

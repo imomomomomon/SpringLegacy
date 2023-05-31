@@ -70,7 +70,12 @@ public class DaoImpl implements Dao{
     }
 
     @Override
-    public List<Object> selectProductInCart(String id) {
-        return sqlSession.selectList(ns_product+"selectProductInCart",id);
+    public List<Object> selectProductInCart(HashMap<String,Object> map) {
+        return sqlSession.selectList(ns_product+"selectProductInCart",map);
+    }
+
+    @Override
+    public int insertProductInCart(HashMap<String,Object> map) {
+        return sqlSession.insert(ns_product+"insertProductInCart",map);
     }
 }

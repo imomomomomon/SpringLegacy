@@ -17,5 +17,6 @@ public interface Dao {
     int insertReply(Object obj);
     int updateReplyContents(HashMap<String,Object> map);
     int deleteReply(int reply_no);
-    List<Object> selectProductInCart(String id);
+    List<Object> selectProductInCart(HashMap<String,Object> map);
+    int insertProductInCart(HashMap<String,Object> map);
 }

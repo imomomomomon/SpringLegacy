@@ -17,6 +17,7 @@
         $(function () {
             getInfo(${no});
             getReplyList(${no});
+            checkProductInCart(${no});
         })
         function getInfo(no) {
             ajax_UrlPlusParam(
@@ -84,6 +85,13 @@
                     'GET'
                 );
             }
+        }
+        function checkProductInCart(product_no) {
+            ajax_UrlPlusParam(
+                '${pageContext.request.contextPath}/product/checkProductInCart/' + product_no,
+                changeBtnCart,
+                'GET'
+            );
         }
         function setValue(data) {
             $('td#td_no').text(data.product_no);
@@ -202,6 +210,14 @@
             }
             return false;
         }
+        function changeBtnCart(no) {
+            console.log('no:'+no);
+            if(no === 1){
+                $('a#a_cart').text("선택해제");
+            } else{
+                $('a#a_cart').text("담기");
+            }
+        }
 
     </script>
 </head>
@@ -223,7 +239,7 @@
 						<span class="fr">
 						
                             <span class="button"><a href="#">물품구매</a></span>
-							<span class="button"> <a href="#">장바구니</a></span>						
+							<span class="button"> <a id="a_cart" href="#">null</a></span>
 							<span class="button"><a href="${pageContext.request.contextPath}/page/list">목록</a></span>
 						</span>
 					</div>
@@ -281,30 +297,6 @@
             </div>
             <div id="div_reply_list">
             </div>
-<%--            <div class="contents">--%>
-<%--                <div class="letter_top">--%>
-<%--                    <ul>--%>
-<%--                        <li class="letter_f"><strong>작성자</strong></li>--%>
-<%--                        <li><span>|</span></li>--%>
-<%--                        <li class="letter_f02"><img alt="" src="${pageContext.request.contextPath}/resources/img/re.jpg"--%>
-<%--                                                    style="width:10px;height:10px;">&nbsp;답글--%>
-<%--                        </li>--%>
-<%--                        <li class="letter_cl">내용이들어갑니다.</li>--%>
-<%--                    </ul>--%>
-<%--                    <!-- 내가 작성한 부분만 수정 삭제 가능 -->--%>
-<%--                    <ul class="letter_r">--%>
-<%--                        <li><span>수정 </span></li>--%>
-<%--                        <li><span>|</span></li>--%>
-<%--                        <li><span>삭제</span></li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
-<%--                <div class="letter_bottom">--%>
-<%--                    <ul>--%>
-<%--                        <li></li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-
             <div class="board_writer03" style="display: none;">
                 <ul>
                     <li><textarea rows="" cols=""></textarea>&nbsp;&nbsp;

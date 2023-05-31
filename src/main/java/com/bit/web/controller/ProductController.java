@@ -68,6 +68,32 @@ public class ProductController {
         String id = (String) session.getAttribute("id");
         if(id == null) return null;
 
-        return service.selectProductInCart(id);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        return service.selectProductInCart(map);
+    }
+
+    @PostMapping("/insertProductInCart/{product_no}")
+    public int insertProductInCart(@PathVariable("product_no") int product_no,HttpSession session) {
+        String id = (String) session.getAttribute("id");
+        if(id == null) return -1;
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("product_no",product_no);
+        return service.insertProductInCart(map);
+    }
+
+    @GetMapping("/checkProductInCart/{product_no}")
+    public int checkProductInCart(@PathVariable("product_no") int product_no,HttpSession session){
+        String id = (String) session.getAttribute("id");
+        if(id == null) return -1;
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("product_no",product_no);
+        if(service.selectProductInCart(map).isEmpty())
+            return 0;
+        return 1;
     }
 }

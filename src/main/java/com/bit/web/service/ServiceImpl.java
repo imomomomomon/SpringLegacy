@@ -85,7 +85,12 @@ public class ServiceImpl implements Service{
     }
 
     @Override
-    public List<Object> selectProductInCart(String id) {
-        return dao.selectProductInCart(id);
+    public List<Object> selectProductInCart(HashMap<String,Object> map) {
+        return dao.selectProductInCart(map);
+    }
+
+    @Override
+    public int insertProductInCart(HashMap<String,Object> map) {
+        return dao.insertProductInCart(map);
     }
 }
