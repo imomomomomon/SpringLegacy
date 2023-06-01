@@ -1,14 +1,14 @@
 package com.bit.web.controller;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 @Component("LoginInterceptor")
-public class LoginIntercepter extends HandlerInterceptorAdapter {
+public class LoginIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String id = (String) request.getSession().getAttribute("id");

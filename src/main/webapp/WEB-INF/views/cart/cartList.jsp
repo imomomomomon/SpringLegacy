@@ -16,6 +16,11 @@
 	<script type="text/javascript">
 		$(function () {
 			getCartList();
+
+			//button
+			{
+				$('input#checkbox_all').click(selectCheckboxAll);
+			}
 		})
 		function getCartList() {
 			ajax_UrlPlusParam(
@@ -26,10 +31,12 @@
 		}
 		function printCartList(array) {
 			$('tbody#tbody_cart_list').children().remove();
+
 			for(let i = 0; i < array.length; i++ ) {
 				let tr = $('<tr></tr>');
 				{
-					tr.append($('<td><input type="checkbox"/></td>'));
+					tr.append($('<td><input type="checkbox" id="chkecbox_toDo_'+ i + '" ' +
+							'name="checkToDo" onclick="addPriceToSum('+i+')"/></td>'));
 					tr.append($('<td>'+array[i].product_no+'</td>'));
 					tr.append($('<td>'+array[i].product_name+'</td>'));
 					if(array[i].product_imgname != null)
@@ -38,12 +45,28 @@
 					else
 						tr.append($('<td>이미지없음</td>'));
 					tr.append($('<td>'+array[i].product_location+'</td>'));
-					tr.append($('<td>'+array[i].product_price+'</td>'));
+					tr.append($('<td id="td_price_'+i+'">'+array[i].product_price+'</td>'));
 					tr.append($('<td>'+array[i].product_category+'</td>'));
 					tr.append($('<td>'+array[i].product_date+'</td>'));
 					tr.append($('<td><span class="buttonFuc"><a href="#">삭제</a></span></td>'));
 				}
 				$('tbody#tbody_cart_list').append(tr);
+			}
+		}
+		function addPriceToSum(index) {
+			let value = $('input#chkecbox_toDo_'+index).is(':checked')?$('td#td_price_'+index).text():($('td#td_price_'+index).text()*-1);
+			let sum = Number($('input#input_total').val()) + Number(value);
+			$('input#input_total').val(sum);
+		}
+		function selectCheckboxAll() {
+			if($('input#checkbox_all').is(':checked')){
+				$('input[name=checkToDo]').prop('checked',false);
+				$('input#input_total').val(0);
+				$('input[name=checkToDo]').trigger("click");
+			} else{
+				$('input[name=checkToDo]').prop('checked',true);
+				$('input[name=checkToDo]').trigger("click");
+				$('input#input_total').val(0);
 			}
 		}
 	</script>
@@ -105,7 +128,7 @@
 								<thead>								
 								
 									<tr>
-										<th scope="col">Check</th>
+										<th scope="col"><input id="checkbox_all" type="checkbox"/></th>
 										<th scope="col">NO.</th>																				
 										<th scope="col">상품명</th>
 										<th scope="col">이미지</th>
@@ -121,7 +144,7 @@
 							</table>
 							<table class="bbsList" align="right">
 							<tr align="right">
-								<th align="right">총합계 &nbsp; <input type="text" readonly name="total" id="total" class="inputText" size="30"  align="right" value="0"/></th>
+								<th align="right">총합계 &nbsp; <input type="text" readonly name="total" id="input_total" class="inputText" size="30"  align="right" value="0"/></th>
 								</tr>	
 							</table>	
 						</div>
