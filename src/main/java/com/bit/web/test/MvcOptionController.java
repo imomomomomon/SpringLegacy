@@ -1,5 +1,7 @@
-package com.bit.web.controller;
+package com.bit.web.test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,12 +9,11 @@ import com.bit.web.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/test")
 public class MvcOptionController {
 	@Autowired
 	Service service;
@@ -40,7 +41,34 @@ public class MvcOptionController {
 	public List<Object> ajaxTestProcess4(@RequestBody HashMap<String, Object>map) {
 		System.out.println(map);
 		return service.selectList(null);
+	}
 
+	@ModelAttribute(name = "strList")
+	public List<String> getTestList(){
+		List<String> list = new ArrayList<>();
+		list.add("000101.png");
+		list.add("000301.png");
+		list.add("000801.png");
+		list.add("091201.png");
+		return list;
+	}
+
+	@RequestMapping("/redirectTest/{send}")
+	public String redirectAttrProcess(RedirectAttributes redirectAttributes,
+									@PathVariable("send") String send){
+		redirectAttributes.addFlashAttribute("msg1","Hi1Spring");
+		return send+":/test2/redirectLink";
+	}
+
+	@RequestMapping(value = "/mapProcess",method = RequestMethod.POST)
+	public String mapProcess(RedirectAttributes redirectAttributes,String strings){
+		String[] strArr = strings.split(",");
+
+		for (int i = 0; i < strArr.length; i++) {
+			redirectAttributes.addFlashAttribute("str"+i,strArr[i]);
+		}
+
+		return "redirect:/test2/inputFlashMapTest";
 	}
 }
 

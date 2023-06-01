@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: jaeungyun
@@ -55,9 +56,28 @@
 </head>
 
 <body>
-  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/SMITH/SALESMAN" id= "ajax1" value="apple">
-  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/SMITH/SALESMAN" id= "ajax2" value="SAMSUNG">
-  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect" id= "ajax3" value="LG">
-  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/KING" id= "ajax4" value="SK">
+<%--<div>--%>
+<%--  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/SMITH/SALESMAN" id= "ajax1" value="apple">--%>
+<%--  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/SMITH/SALESMAN" id= "ajax2" value="SAMSUNG">--%>
+<%--  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect" id= "ajax3" value="LG">--%>
+<%--  <input type="button" href="${pageContext.request.contextPath}/pathParam/empSelect/KING" id= "ajax4" value="SK">--%>
+<%--</div>--%>
+<div>
+  <input type="button" onclick="location.href='${pageContext.request.contextPath}/test/redirectTest/redirect'" value="redirectTest">
+  <input type="button" onclick="location.href='${pageContext.request.contextPath}/test/redirectTest/forward'" value="forwardTest">
+    <h2>msg1:${msg1}</h2>
+    <h5>strList:${strList}</h5>
+    <c:forEach var="entity" items="${strList}">
+        <img src="${pageContext.request.contextPath}/resources/upload/${entity}">
+    </c:forEach>
+</div>
+<h1>----------------------------------------------------</h1>
+<div>
+    <form action="${pageContext.request.contextPath}/test/mapProcess" method="post">
+        <input type="text" name="strings">
+        <input type="submit" value="comfirm">
+    </form>
+    <h3>map:${map}</h3>
+</div>
 </body>
 </html>

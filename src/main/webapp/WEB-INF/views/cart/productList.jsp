@@ -22,18 +22,12 @@
 			let session_id = '${sessionScope.id}';
 			if(session_id == ''){
 				$('span#span_admin_logout').hide();
-				$('span#span_admin_add').hide();
 			} else {
 				$('span#span_admin_login').hide();
 			}
 		})
 		function goInfo(no) {
 			location.href="${pageContext.request.contextPath}/page/info/"+no;
-		}
-		function goCart() {
-			let session_id = '${sessionScope.id}';
-			if(session_id != '')
-				location.href = "${pageContext.request.contextPath}/page/cart"
 		}
 		function getList() {
 			ajax_UrlPlusParam(
@@ -83,7 +77,7 @@
 							<span id="span_admin_logout" class="button"><a href="${pageContext.request.contextPath}/page/logout">로그아웃</a></span>
 							<span id="span_admin_add" class="button"><a href="${pageContext.request.contextPath}/page/add">추가</a></span>
 							<span class="button"><a href="#">목록</a></span>
-							<span class="button"><a href="javascript:goCart()">장바구니</a></span>
+							<span class="button"><a href="${pageContext.request.contextPath}/page/cart">장바구니</a></span>
 						</span>
 					</div>
                    <form action="clientList.do" method="post">

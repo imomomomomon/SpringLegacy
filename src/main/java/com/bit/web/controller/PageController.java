@@ -40,6 +40,6 @@ public class PageController {
         return "cart/cartList";
     }
 
-    @GetMapping("/ajaxtest")
+    @GetMapping("/ajax-test")
     public String goTest() { return "test/mvcOptionIndex"; }
 }

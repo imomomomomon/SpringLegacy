@@ -17,4 +17,5 @@ public interface Service {
     int deleteReply(int reply_no);
     List<Object> selectProductInCart(HashMap<String,Object> map);
     int insertProductInCart(HashMap<String,Object> map);
+    int deleteProductInCart(int product_no);
 }

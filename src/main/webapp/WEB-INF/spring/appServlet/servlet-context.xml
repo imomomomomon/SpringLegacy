@@ -29,11 +29,20 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+
 	<context:component-scan base-package="com.bit.web" />
 	<context:component-scan base-package="com.bit.web.controller" />
 	<context:component-scan base-package="com.bit.web.model" />
 	<context:component-scan base-package="com.bit.web.repository" />
 	<context:component-scan base-package="com.bit.web.service" />
-	
+	<context:component-scan base-package="com.bit.web.test" />
+
+	<interceptors>
+		<interceptor>
+			<mapping path="/page/add"/>
+			<mapping path="/page/cart"/>
+			<beans:ref bean="LoginInterceptor"/>
+		</interceptor>
+	</interceptors>
+
 </beans:beans>

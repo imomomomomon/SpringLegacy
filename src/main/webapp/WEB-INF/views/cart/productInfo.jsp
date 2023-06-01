@@ -14,6 +14,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
     <script type="text/javascript">
         let inputNo = 0;
+        let isSelected = false;
         $(function () {
             getInfo(${no});
             getReplyList(${no});
@@ -90,6 +91,26 @@
             ajax_UrlPlusParam(
                 '${pageContext.request.contextPath}/product/checkProductInCart/' + product_no,
                 changeBtnCart,
+                'GET'
+            );
+        }
+        function setProductInCart(product_no) {
+            const id = '${sessionScope.id}';
+            if(id === ''){
+                alert("로그인이 필요합니다.")
+                return;
+            }
+
+            ajax_UrlPlusParam(
+                '${pageContext.request.contextPath}/product/' +
+                (isSelected?'deleteProductInCart/':'insertProductInCart/') + product_no,
+                function () {
+                    if(isSelected)
+                        alert("카트에서 제거하였습니다.");
+                    else
+                        alert("카트에 등록하였습니다.");
+                    checkProductInCart(product_no);
+                },
                 'GET'
             );
         }
@@ -211,14 +232,14 @@
             return false;
         }
         function changeBtnCart(no) {
-            console.log('no:'+no);
             if(no === 1){
                 $('a#a_cart').text("선택해제");
+                isSelected = true;
             } else{
                 $('a#a_cart').text("담기");
+                isSelected = false;
             }
         }
-
     </script>
 </head>
 <body >
@@ -239,7 +260,7 @@
 						<span class="fr">
 						
                             <span class="button"><a href="#">물품구매</a></span>
-							<span class="button"> <a id="a_cart" href="#">null</a></span>
+							<span class="button"> <a id="a_cart" href="javascript:setProductInCart(${no})">null</a></span>
 							<span class="button"><a href="${pageContext.request.contextPath}/page/list">목록</a></span>
 						</span>
 					</div>

@@ -22,7 +22,7 @@
         #{product_seller},
         #{product_category})
     </insert>
-    <insert id="insertProductInCart" parameterType="int">
+    <insert id="insertProductInCart" parameterType="java.util.HashMap">
         call InsertProductInCart(#{id},#{product_no})
     </insert>
     <update id="update" parameterType="product">
@@ -36,5 +36,8 @@
     </update>
     <delete id="delete" parameterType="int">
         call DeleteProduct(#{product_no})
+    </delete>
+    <delete id="deleteProductInCart" parameterType="int">
+        call DeleteProductInCart(#{product_no})
     </delete>
 </mapper>

@@ -93,4 +93,9 @@ public class ServiceImpl implements Service{
     public int insertProductInCart(HashMap<String,Object> map) {
         return dao.insertProductInCart(map);
     }
+
+    @Override
+    public int deleteProductInCart(int product_no) {
+        return dao.deleteProductInCart(product_no);
+    }
 }
