@@ -101,4 +101,10 @@ public class ProductController {
     public int deleteProductInCart(@PathVariable("product_no") int product_no) {
         return service.deleteProductInCart(product_no);
     }
+
+    @GetMapping("/deleteArrayInCart")
+    public int deleteProductInCart(@RequestParam("deleteArr[]")List<String> deleteArr) {
+        System.out.println(deleteArr);
+        return 0;
+    }
 }

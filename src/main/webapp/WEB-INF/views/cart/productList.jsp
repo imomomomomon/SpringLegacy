@@ -136,7 +136,7 @@
 									</tr>
 								</thead>
 
-								<tbody id="tbody_list">
+								<tbody id="tbody_list" style="cursor: pointer">
 								</tbody>
 							</table>
 						</div>

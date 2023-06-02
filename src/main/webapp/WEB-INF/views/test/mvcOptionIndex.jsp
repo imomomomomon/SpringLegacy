@@ -10,8 +10,22 @@
 <html>
 <head>
     <title>Title</title>
-<script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
     <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([${data}]);
+            var options = {
+                title: 'My Daily Activities',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
         function ajaxProcess(url,type,contentType,dataType,data){
             $.ajax({
                 url:url,
@@ -29,29 +43,29 @@
                 }
             })
         }
-        $(function(){
-           $("input[type='button']").click(function(){
-               switch(this.id){
-                   case 'ajax1':
-                        ajaxProcess('${pageContext.request.contextPath}/ajaxTest1','POST',null,'html',null);
-                       break;
-                   case 'ajax2':
-                       var jsonValue={"id":"blue","name":"abc","weight":55.7,"height":189.9};
-                       ajaxProcess('${pageContext.request.contextPath}/ajaxTest2','POST',"application/json",'text',JSON.stringify(jsonValue));
-                       break;
-                   case 'ajax3':
-                       var jsonValue={"name":"oop","since":4980,"message":"hi"};
-                       ajaxProcess('${pageContext.request.contextPath}/ajaxTest3','POST',"application/json",'json',JSON.stringify(jsonValue));
-                       break;
-                   case 'ajax4':
-                       var jsonValue={"name":"oop","since":4980,"message":"hi"};
-                       ajaxProcess('${pageContext.request.contextPath}/ajaxTest4','POST',"application/json",'json',null);
-                       break;
-                   default:
-                       break;
-               }
-            });
-        });
+        <%--$(function(){--%>
+        <%--   $("input[type='button']").click(function(){--%>
+        <%--       switch(this.id){--%>
+        <%--           case 'ajax1':--%>
+        <%--                ajaxProcess('${pageContext.request.contextPath}/ajaxTest1','POST',null,'html',null);--%>
+        <%--               break;--%>
+        <%--           case 'ajax2':--%>
+        <%--               var jsonValue={"id":"blue","name":"abc","weight":55.7,"height":189.9};--%>
+        <%--               ajaxProcess('${pageContext.request.contextPath}/ajaxTest2','POST',"application/json",'text',JSON.stringify(jsonValue));--%>
+        <%--               break;--%>
+        <%--           case 'ajax3':--%>
+        <%--               var jsonValue={"name":"oop","since":4980,"message":"hi"};--%>
+        <%--               ajaxProcess('${pageContext.request.contextPath}/ajaxTest3','POST',"application/json",'json',JSON.stringify(jsonValue));--%>
+        <%--               break;--%>
+        <%--           case 'ajax4':--%>
+        <%--               var jsonValue={"name":"oop","since":4980,"message":"hi"};--%>
+        <%--               ajaxProcess('${pageContext.request.contextPath}/ajaxTest4','POST',"application/json",'json',null);--%>
+        <%--               break;--%>
+        <%--           default:--%>
+        <%--               break;--%>
+        <%--       }--%>
+        <%--    });--%>
+        <%--});--%>
     </script>
 </head>
 
@@ -79,5 +93,8 @@
     </form>
     <h3>map:${map}</h3>
 </div>
+  <input type="button" onclick="location.href='${pageContext.request.contextPath}/test/getData'" value="googlechart">
+<div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    <h3>data:${data}</h3>
 </body>
 </html>

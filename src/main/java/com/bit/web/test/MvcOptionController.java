@@ -1,11 +1,11 @@
 package com.bit.web.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import com.bit.web.service.Service;
+import com.bit.web.model.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +69,19 @@ public class MvcOptionController {
 		}
 
 		return "redirect:/test2/inputFlashMapTest";
+	}
+	@RequestMapping("/getData")
+	public String getMapData(Model model){
+		List<Object> list = service.selectList(null);
+		String mapString = "['Task', 'Hours per Day'],";
+		for (int i = 0; i < list.size(); i++) {
+			ProductDto dto = (ProductDto) list.get(i);
+			mapString += "['" + dto.getProduct_name() + "'," +
+						dto.getProduct_price() + "]";
+			if(i < list.size()-1) mapString += ",";
+		}
+		model.addAttribute("data",mapString);
+		return "test/mvcOptionIndex";
 	}
 }
 

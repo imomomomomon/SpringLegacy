@@ -98,4 +98,9 @@ public class ServiceImpl implements Service{
     public int deleteProductInCart(int product_no) {
         return dao.deleteProductInCart(product_no);
     }
+
+    @Override
+    public int deleteArrayInCart(List<String> list) {
+        return dao.deleteArrayInCart(list);
+    }
 }

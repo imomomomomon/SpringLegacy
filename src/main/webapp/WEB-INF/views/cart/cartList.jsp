@@ -14,14 +14,18 @@
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 	<script type="text/javascript">
+		let arrLength = 0;
 		$(function () {
 			getCartList();
-
 			//button
 			{
 				$('input#checkbox_all').click(selectCheckboxAll);
 			}
-		})
+		});
+		$(window).on("beforeunload", function() {
+			console.log("asd");
+			return '';
+		});
 		function getCartList() {
 			ajax_UrlPlusParam(
 					'${pageContext.request.contextPath}/product/getProductInCart',
@@ -29,14 +33,24 @@
 					'GET'
 			);
 		}
+		function deleteProduct(product_no) {
+			if(confirm("정말로 삭제하시겠습니까?")) {
+				ajax_UrlPlusParam(
+						'${pageContext.request.contextPath}/product/deleteProductInCart/'+ product_no,
+						getCartList,
+						'GET'
+				);
+			}
+		}
 		function printCartList(array) {
 			$('tbody#tbody_cart_list').children().remove();
 
+			arrLength = array.length;
 			for(let i = 0; i < array.length; i++ ) {
-				let tr = $('<tr></tr>');
+				let tr = $('<tr id="tr_product_'+ i +'"></tr>');
 				{
-					tr.append($('<td><input type="checkbox" id="chkecbox_toDo_'+ i + '" ' +
-							'name="checkToDo" onclick="addPriceToSum('+i+')"/></td>'));
+					tr.append($('<td><input type="checkbox" value="'+array[i].product_no +
+							'" name="checkToDo" onclick="calculatePrice()"/></td>'));
 					tr.append($('<td>'+array[i].product_no+'</td>'));
 					tr.append($('<td>'+array[i].product_name+'</td>'));
 					if(array[i].product_imgname != null)
@@ -45,29 +59,45 @@
 					else
 						tr.append($('<td>이미지없음</td>'));
 					tr.append($('<td>'+array[i].product_location+'</td>'));
-					tr.append($('<td id="td_price_'+i+'">'+array[i].product_price+'</td>'));
+					tr.append($('<td name="price">'+array[i].product_price+'</td>'));
 					tr.append($('<td>'+array[i].product_category+'</td>'));
 					tr.append($('<td>'+array[i].product_date+'</td>'));
-					tr.append($('<td><span class="buttonFuc"><a href="#">삭제</a></span></td>'));
+					tr.append($('<td><span class="buttonFuc"><a href="javascript:deleteProduct('+
+							array[i].product_no+')">삭제</a></span></td>'));
 				}
 				$('tbody#tbody_cart_list').append(tr);
 			}
 		}
-		function addPriceToSum(index) {
-			let value = $('input#chkecbox_toDo_'+index).is(':checked')?$('td#td_price_'+index).text():($('td#td_price_'+index).text()*-1);
-			let sum = Number($('input#input_total').val()) + Number(value);
+		function calculatePrice() {
+			let sum = 0;
+			for (let i = 0; i < arrLength; i++) {
+				let tr = $('#tr_product_'+i);
+				if(tr.find("[name=checkToDo]").is(':checked')) {
+					sum += Number(tr.find("[name=price]").text());
+				}
+			}
 			$('input#input_total').val(sum);
 		}
 		function selectCheckboxAll() {
 			if($('input#checkbox_all').is(':checked')){
-				$('input[name=checkToDo]').prop('checked',false);
-				$('input#input_total').val(0);
-				$('input[name=checkToDo]').trigger("click");
-			} else{
 				$('input[name=checkToDo]').prop('checked',true);
-				$('input[name=checkToDo]').trigger("click");
-				$('input#input_total').val(0);
+			} else{
+				$('input[name=checkToDo]').prop('checked',false);
 			}
+			calculatePrice();
+		}
+		function deleteSelected() {
+			let array = [];
+			$('input[name=checkToDo]:checked').each(function(){//체크된 리스트 저장
+				array.push($(this).val());
+			});
+			let params = {"deleteArr" : array};
+			ajax_InsertParamWithUrl(
+					params,
+					'${pageContext.request.contextPath}/product/deleteArrayInCart',
+					getCartList,
+					'GET'
+			);
 		}
 	</script>
 
@@ -89,7 +119,7 @@
 					<div class="contents">
 					
 					<div class="btnSet clfix mgb15">
-						<span class="fr"> <span class="button"><a href="">목록</a></span>
+						<span class="fr"> <span class="button"><a href="${pageContext.request.contextPath}/page/list">목록</a></span>
 						</span>
 					</div>
 
@@ -143,9 +173,12 @@
 								</tbody>
 							</table>
 							<table class="bbsList" align="right">
+								<tr align="right">
+									<th align="right"><span class="button"><a href="javascript:deleteSelected()">선택 삭제</a></span></th>
+								</tr>
 							<tr align="right">
 								<th align="right">총합계 &nbsp; <input type="text" readonly name="total" id="input_total" class="inputText" size="30"  align="right" value="0"/></th>
-								</tr>	
+								</tr>
 							</table>	
 						</div>
 					</div>
