@@ -11,20 +11,34 @@
 <meta http-equiv="imagetoolbar" content="no" />
 <!-- <link href="../css/contents.css" rel="stylesheet" type="text/css" /> -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		input[type="number"]::-webkit-outer-spin-button,
+		input[type="number"]::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input[type="number"] {
+			width: 20px;
+			height: 18px;
+			text-align: center;
+		}
+	</style>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
 	<script type="text/javascript">
 		let arrLength = 0;
 		$(function () {
 			getCartList();
-			//button
+			//input
 			{
 				$('input#checkbox_all').click(selectCheckboxAll);
+				$(document).on("change","[name=quantity]",function () {
+					if(Number($(this).val()) < 1) $(this).val(1);
+					else {
+						updateQuantityInCart($(this).next().val(),$(this).val());
+					}
+				});
 			}
-		});
-		$(window).on("beforeunload", function() {
-			console.log("asd");
-			return '';
 		});
 		function getCartList() {
 			ajax_UrlPlusParam(
@@ -62,8 +76,19 @@
 					tr.append($('<td name="price">'+array[i].product_price+'</td>'));
 					tr.append($('<td>'+array[i].product_category+'</td>'));
 					tr.append($('<td>'+array[i].product_date+'</td>'));
+					let btn_variation = $('<td></td>');
+					{
+						btn_variation.append($('<span class="buttonFuc"><a href="javascript:btn_variation(-1,'+
+								array[i].product_no+')">-</a></span>'));
+						btn_variation.append($('<input type="number" name="quantity" id="input_quantity_'+
+								array[i].product_no+'" value="1"/>'));
+						btn_variation.append($('<input type="hidden" name="hidden" value="'+array[i].product_no+'"/>'));
+						btn_variation.append($('<span class="buttonFuc"><a href="javascript:btn_variation(1,'+
+								array[i].product_no+')">+</a></span>'));
+					}
+					tr.append(btn_variation);
 					tr.append($('<td><span class="buttonFuc"><a href="javascript:deleteProduct('+
-							array[i].product_no+')">삭제</a></span></td>'));
+							array[i].product_no+')">삭제</a></td>'));
 				}
 				$('tbody#tbody_cart_list').append(tr);
 			}
@@ -87,17 +112,38 @@
 			calculatePrice();
 		}
 		function deleteSelected() {
-			let array = [];
-			$('input[name=checkToDo]:checked').each(function(){//체크된 리스트 저장
-				array.push($(this).val());
-			});
-			let params = {"deleteArr" : array};
+			if(confirm("정말로 삭제하시겠습니까?")) {
+				let array = [];
+				$('input[name=checkToDo]:checked').each(function(){//체크된 리스트 저장
+					array.push($(this).val());
+				});
+				let params = {"deleteArr" : array};
+				ajax_InsertParamWithUrl(
+						params,
+						'${pageContext.request.contextPath}/product/deleteArrayInCart',
+						getCartList,
+						'GET'
+				);
+			}
+		}
+		function updateQuantityInCart(product_no,value) {
+			let params = {"product_no": product_no,"quantity" : value };
 			ajax_InsertParamWithUrl(
 					params,
-					'${pageContext.request.contextPath}/product/deleteArrayInCart',
-					getCartList,
+					'${pageContext.request.contextPath}/product/updateQuantityInCart',
+					function () {
+					},
 					'GET'
 			);
+		}
+		function btn_variation(value,product_no) {
+			let input_quantity = $('#input_quantity_'+product_no);
+			input_quantity.val(Number(input_quantity.val()) + Number(value));
+
+			if(Number(input_quantity.val()) < 1)
+				input_quantity.val(1);
+			else
+				input_quantity.trigger("change");
 		}
 	</script>
 
@@ -146,13 +192,14 @@
 							<table class="bbsList">
 								<colgroup>
 									<col width="60"/>
-									<col width="80" />
-									<col width="170" />
-									<col width="170" />
-									<col width="170" />
-									<col width="170" />
-									<col width="170" />
-									<col width="170" />
+									<col width="70" />
+									<col width="160" />
+									<col width="100" />
+									<col width="160" />
+									<col width="150" />
+									<col width="150" />
+									<col width="180" />
+									<col width="120" />
 									<col width="110" />
 								</colgroup>
 								<thead>								
@@ -166,7 +213,8 @@
 										<th scope="col">가격</th>
 										<th scope="col">종류</th>
 										<th scope="col">날짜</th>
-										<th scope="col">상태</th>									
+										<th scope="col">수량</th>
+										<th scope="col">상태</th>
 									</tr>
 								</thead>
 								<tbody id="tbody_cart_list">

@@ -104,7 +104,21 @@ public class ProductController {
 
     @GetMapping("/deleteArrayInCart")
     public int deleteProductInCart(@RequestParam("deleteArr[]")List<String> deleteArr) {
-        System.out.println(deleteArr);
-        return 0;
+        return service.deleteArrayInCart(deleteArr);
+    }
+
+    @GetMapping("/updateQuantityInCart")
+    public int updateQuantityInCart(@RequestParam("product_no") int product_no,
+                                    @RequestParam("quantity") int quantity,
+                                    HttpSession session) {
+        String id = (String) session.getAttribute("id");
+        if(id == null) return -1;
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("product_no",product_no);
+        map.put("quantity",quantity);
+
+        return service.updateQuantityInCart(map);
     }
 }

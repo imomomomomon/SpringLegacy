@@ -88,4 +88,9 @@ public class DaoImpl implements Dao{
     public int deleteArrayInCart(List<String> list) {
         return sqlSession.delete(ns_product+"deleteArrayInCart",list);
     }
+
+    @Override
+    public int updateQuantityInCart(HashMap<String, Object> map) {
+        return sqlSession.update(ns_product+"updateQuantityInCart",map);
+    }
 }

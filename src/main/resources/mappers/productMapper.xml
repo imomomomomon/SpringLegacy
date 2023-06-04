@@ -34,6 +34,9 @@
             #{product_price},
             #{product_category})
     </update>
+    <update id="updateQuantityInCart" parameterType="java.util.HashMap">
+        call UpdateQuantityInCart(#{id},#{product_no},#{quantity});
+    </update>
     <delete id="delete" parameterType="int">
         call DeleteProduct(#{product_no})
     </delete>
@@ -44,11 +47,8 @@
         delete from shop_product_cart
         <where>
             cart_product_no in
-            <foreach collection="list" item="item" open="" close="" separator="OR">
-            #{item}
-            </foreach>
-            <foreach collection="list" item="item" open="" close="" separator="OR">
-                (IDX = #{item.idx} AND VIN = #{item.vin})
+            <foreach  item="item" separator="," open="(" close=")" collection="list">
+                #{item}
             </foreach>
         </where>
     </delete>

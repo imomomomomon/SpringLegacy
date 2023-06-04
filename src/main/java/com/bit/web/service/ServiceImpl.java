@@ -103,4 +103,9 @@ public class ServiceImpl implements Service{
     public int deleteArrayInCart(List<String> list) {
         return dao.deleteArrayInCart(list);
     }
+
+    @Override
+    public int updateQuantityInCart(HashMap<String, Object> map) {
+        return dao.updateQuantityInCart(map);
+    }
 }

@@ -19,4 +19,5 @@ public interface Service {
     int insertProductInCart(HashMap<String,Object> map);
     int deleteProductInCart(int product_no);
     int deleteArrayInCart(List<String> list);
+    int updateQuantityInCart(HashMap<String,Object> map);
 }
