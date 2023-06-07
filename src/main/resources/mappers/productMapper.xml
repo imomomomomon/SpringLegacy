@@ -5,7 +5,7 @@
 
 <mapper namespace="productMapper">
     <select id="select" parameterType="java.util.HashMap" resultType="product">
-        call GetProduct(#{no},#{product_seller})
+        call GetProduct(#{no},#{product_seller},#{product_name},#{product_location},#{product_category})
     </select>
     <select id="selectCategory" resultType="java.lang.String">
         call GetCategory()

@@ -36,7 +36,25 @@
 					'GET'
 			);
 		}
+		function searchList() {
+			console.log("asd:"+$('form#form_search input[name="query"]').val());
+			if($('form#form_search input[name="query"]').val() === undefined){
+				alert("항목 값을 선택하지 않고 검색하셨습니다!");
+				return;
+			}
+
+			let data = $('form#form_search').serialize();
+			ajax_InsertParamWithUrl(
+					data,
+					'${pageContext.request.contextPath}/product/searchProductList',
+					printList,
+					'GET'
+			);
+		}
 		function printList(array) {
+			if(array == null) return;
+			$('#tbody_list').children().remove();
+
 			for (let i = 0; i < array.length; i++) {
 				let tr = $('<tr onclick="goInfo('+array[i].product_no+')">' + '</tr>');
 				tr.append($('<td>'+ array[i].product_no +'</td>'));
@@ -76,11 +94,10 @@
 							<span id="span_admin_login" class="button"><a href="${pageContext.request.contextPath}/page/login">로그인</a></span>
 							<span id="span_admin_logout" class="button"><a href="${pageContext.request.contextPath}/page/logout">로그아웃</a></span>
 							<span id="span_admin_add" class="button"><a href="${pageContext.request.contextPath}/page/add">추가</a></span>
-							<span class="button"><a href="#">목록</a></span>
+							<span class="button"><a href="javascript:getList()">목록</a></span>
 							<span class="button"><a href="${pageContext.request.contextPath}/page/cart">장바구니</a></span>
 						</span>
 					</div>
-                   <form action="clientList.do" method="post">
 					<table class="bbsWrite mgb35">
 						<caption></caption>
 						<colgroup>
@@ -91,26 +108,22 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th>업체명</th>
-								<td><select style="width: 200px;">
-										<option>선택하세요</option>
-								</select></td>
+								<form id="form_search">
 								<th>
 								<select id="query" name="query">
-								  <option selected="selected">선택하세요</option>
-								  <option value="productName">상품명</option>
-								  <option value="productOrigin">원산지</option>
-								  <option value="productCategory">카테고리</option>
+								  <option value="" selected="selected">선택하세요</option>
+								  <option value="name">상품명</option>
+								  <option value="location">원산지</option>
+								  <option value="category">카테고리</option>
 								</select>
 								</th>
 								<td><input type="text" name="data" style="border:1px solid #ddd; height:20px;" class="inputText" size="30" />
-									<span class="button"><a href="#" id="search">검색</a></span>
-<%--									<span class="button"><a href="clientList.do">새로고침</a></span>--%>
+									<span class="button"><a href="javascript:searchList()">검색</a></span>
 									</td>
+								</form>
 							</tr>
 						</tbody>
 					</table>
-					</form>
 							<table class="bbsList">
 								<colgroup>
 									<col width="80" />

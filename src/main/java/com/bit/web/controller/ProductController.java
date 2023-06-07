@@ -40,6 +40,26 @@ public class ProductController {
         return service.selectList(map).size()==0?null:service.selectList(map).get(0);
     }
 
+    @GetMapping("/searchProductList")
+    public List<Object> searchProductList(@RequestParam(required = false)String query,
+                                          @RequestParam(required = false)String data){
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        switch (query){
+            case "name":
+                map.put("product_name",data);
+                break;
+            case "location":
+                map.put("product_location",data);
+                break;
+            case "category":
+                map.put("product_category",data);
+                break;
+            default:
+                break;
+        }
+        return service.selectList(map);
+    }
+
     @GetMapping("/getCategory")
     public List<String> selectCategory(){
         return service.selectCategory();
