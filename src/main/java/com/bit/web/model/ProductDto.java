@@ -12,6 +12,7 @@ public class ProductDto {
     String product_date;
     String product_seller;
     MultipartFile imgfile;
+    int product_cart_quantity;
 
     public ProductDto() {
     }
@@ -86,6 +87,14 @@ public class ProductDto {
 
     public void setImgfile(MultipartFile imgfile) {
         this.imgfile = imgfile;
+    }
+
+    public int getProduct_cart_quantity() {
+        return product_cart_quantity;
+    }
+
+    public void setProduct_cart_quantity(int product_cart_quantity) {
+        this.product_cart_quantity = product_cart_quantity;
     }
 
     @Override

@@ -44,6 +44,16 @@ public class ServiceImpl implements Service{
         return dao.checkLogin(user);
     }
 
+    @Override
+    public String checkID(String id) {
+        return dao.checkID(id);
+    }
+
+    @Override
+    public int registerAccount(Object obj) {
+        return dao.registerAccount(obj);
+    }
+
     private boolean uploadFileAtProductDto(ProductDto dto){
         if(!dto.getImgfile().isEmpty()) {
             File file = new File(Config.FILEUPLOAD.url(),dto.getImgfile().getOriginalFilename());

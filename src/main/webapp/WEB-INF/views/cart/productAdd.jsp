@@ -95,7 +95,7 @@
 					+ "/" + '${sessionScope.id}';
 			ajax_UrlPlusParam(
 					url,
-					function () {
+					function (data) {
 						if(data == '')
 							alert("검색 결과가 존재하지 않습니다.");
 						else {
@@ -146,7 +146,7 @@
 				return;
 			}
 
-			ajax_InsertParamWithUrl(
+			ajax_UrlPlusParam(
 					'${pageContext.request.contextPath}/product/deleteProduct/'+ $('#product_no').val(),
 					function (data) {
 						if(data == '1') {

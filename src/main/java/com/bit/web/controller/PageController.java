@@ -15,12 +15,16 @@ public class PageController {
         if(id != null) {
             model.addAttribute("cookie_id",id);
         }
-        return "adminLogin";
+        return "login/adminLogin";
     }
     @GetMapping("/logout")
     public String goLogout(HttpSession session){
         session.removeAttribute("id");
         return "cart/productList";
+    }
+    @GetMapping("/signup")
+    public String goSignUp(){
+        return "login/signup";
     }
     @GetMapping("/list")
     public String goList(){

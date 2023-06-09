@@ -37,8 +37,7 @@
 			);
 		}
 		function searchList() {
-			console.log("asd:"+$('form#form_search input[name="query"]').val());
-			if($('form#form_search input[name="query"]').val() === undefined){
+			if($('select#query').val() === undefined){
 				alert("항목 값을 선택하지 않고 검색하셨습니다!");
 				return;
 			}

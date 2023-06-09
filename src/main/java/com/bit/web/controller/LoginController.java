@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("/login")
 public class LoginController {
     @Resource(name = "serviceImpl")
     Service service;
 
-    @ResponseBody
     @PostMapping(value = "/check",produces = "application/text; charset=utf-8;")
     public String checkLogin(String user_id, String user_passwd, String checker,
                              HttpSession session,
@@ -37,5 +36,12 @@ public class LoginController {
             cg.removeCookie(response);
         }
         return id;
+    }
+    @PostMapping("/register")
+    public int registerAccount(String user_id, String user_passwd){
+        String checkStr = service.checkID(user_id);
+        if(checkStr != null && checkStr.equalsIgnoreCase(user_id))
+            return -1;
+        return service.registerAccount(new UserDto(user_id,user_passwd));
     }
 }

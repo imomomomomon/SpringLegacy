@@ -74,8 +74,10 @@
                          title="LOGIN"/>
                 </div>
 
-                <div class="saveId"><input type="checkbox" id="checker" name="checker" />
+                <div class="saveId">
+                    <input type="checkbox" id="checker" name="checker" />
                     <img src="${pageContext.request.contextPath}/resources/login/img/common/save_id.gif" alt="아이디 저장"/>
+                    <input type="button" onclick="location.href='${pageContext.request.contextPath}/page/signup'" value="회원가입"/>
                 </div>
             </fieldset>
         </div>

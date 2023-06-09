@@ -79,12 +79,12 @@
 					let btn_variation = $('<td></td>');
 					{
 						btn_variation.append($('<span class="buttonFuc"><a href="javascript:btn_variation(-1,'+
-								array[i].product_no+')">-</a></span>'));
+								i +')">-</a></span>'));
 						btn_variation.append($('<input type="number" name="quantity" id="input_quantity_'+
-								array[i].product_no+'" value="1"/>'));
+								i +'" value="'+array[i].product_cart_quantity+'"/>'));
 						btn_variation.append($('<input type="hidden" name="hidden" value="'+array[i].product_no+'"/>'));
 						btn_variation.append($('<span class="buttonFuc"><a href="javascript:btn_variation(1,'+
-								array[i].product_no+')">+</a></span>'));
+								i +')">+</a></span>'));
 					}
 					tr.append(btn_variation);
 					tr.append($('<td><span class="buttonFuc"><a href="javascript:deleteProduct('+
@@ -98,7 +98,8 @@
 			for (let i = 0; i < arrLength; i++) {
 				let tr = $('#tr_product_'+i);
 				if(tr.find("[name=checkToDo]").is(':checked')) {
-					sum += Number(tr.find("[name=price]").text());
+					sum += Number(tr.find("[name=price]").text()) *
+							$('input#input_quantity_'+i).val();
 				}
 			}
 			$('input#input_total').val(sum);
@@ -136,14 +137,16 @@
 					'GET'
 			);
 		}
-		function btn_variation(value,product_no) {
-			let input_quantity = $('#input_quantity_'+product_no);
+		function btn_variation(value,index) {
+			let input_quantity = $('#input_quantity_'+index);
 			input_quantity.val(Number(input_quantity.val()) + Number(value));
 
 			if(Number(input_quantity.val()) < 1)
 				input_quantity.val(1);
 			else
 				input_quantity.trigger("change");
+
+			calculatePrice();
 		}
 	</script>
 

@@ -45,6 +45,16 @@ public class DaoImpl implements Dao{
     }
 
     @Override
+    public String checkID(String id) {
+        return sqlSession.selectOne(ns_user+"checkID",id);
+    }
+
+    @Override
+    public int registerAccount(Object obj) {
+        return sqlSession.insert(ns_user+"registerAccount",obj);
+    }
+
+    @Override
     public List<Object> selectReplyList(int board_no) {
         return sqlSession.selectList(ns_reply+"selectReplyList",board_no);
     }

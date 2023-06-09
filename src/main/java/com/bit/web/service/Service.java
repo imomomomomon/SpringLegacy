@@ -9,7 +9,11 @@ public interface Service {
     int insertProduct(Object obj);
     int updateProduct(Object obj);
     int deleteProduct(int product_no);
+    //로그인----------------------------
     String checkLogin(Object user);
+    String checkID(String id);
+    int registerAccount(Object obj);
+    //답글------------------------------
     List<Object> selectReplyList(int board_no);
     Object selectReply(int no);
     int insertReply(Object obj);
